@@ -35,7 +35,8 @@ Water-Cycle-Project/ │
                      ├── logger_config.py # Centralized logging configuration 
                      ├── logs/ # Log files directory 
                      │ ├── flask_app.log # Application logs 
-                     │ └── water_cycle_sm.log # State machine logs 
+                     │ └── water_cycle_sm.log # State machine logs
+                     └── requirements.txt # Python packages required
                      └── README.md # This file
 ```
 
