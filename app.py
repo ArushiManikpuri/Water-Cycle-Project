@@ -8,6 +8,8 @@ logger = setup_logger('flask_app')
 app = Flask(__name__)
 water_cycle = WaterCycleSM()
 
+history = []
+
 @app.route("/")
 def index():
     logger.info(f"Index page accessed from {request.remote_addr}")
@@ -35,7 +37,9 @@ def heat_up():
     water_cycle.heat_up()
     new_state = water_cycle.state
     logger.info(f"State changed from {current_state} to {new_state}")
-    
+    history.append(f"State changed from {current_state} to {new_state}")
+    if len(history) > 5:
+        history.pop(0)  # Keep only the last 5 entries
     return f"{message}<br>Temperature increased. New state: {new_state}"
 
 @app.route("/cool_down")
@@ -54,8 +58,14 @@ def cool_down():
     water_cycle.cool_down()
     new_state = water_cycle.state
     logger.info(f"State changed from {current_state} to {new_state}")
-    
+    history.append(f"State changed from {current_state} to {new_state}")
+    if len(history) > 5:
+        history.pop(0)  # Keep only the last 5 entries
     return f"{message}<br>Temperature decreased. New state: {new_state}"
+
+@app.route("/history")
+def history_view():
+    return "<br>".join(history[-5:])  # Return only the last 5 items
 
 if __name__ == "__main__":
     water_cycle.start()
